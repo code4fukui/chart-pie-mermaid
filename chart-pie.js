@@ -1,5 +1,6 @@
 import * as d3 from "https://cdn.skypack.dev/d3@7";
 import { CSV } from "https://js.sabae.cc/CSV.js";
+import { Num } from "https://js.sabae.cc/Num.js";
 
 const getCSV = async (comp) => {
   const fn = comp.getAttribute("src");
@@ -64,13 +65,22 @@ class ChartPie extends HTMLElement {
       .outerRadius(radius - 30)
       .innerRadius(radius - 30);
   
+    const sum = dataset.reduce((pre, cur) => parseInt(cur.count || cur.value) + pre, 0);
+
     pieGroup.append("text")
       .attr("fill", "black")
       .attr("transform", (d) => "translate(" + text.centroid(d) + ")")
       .attr("dy", "5px")
       .attr("font-size", "12px")
       .attr("text-anchor", "middle")
-      .text((d) => d.data.name);
+      .text((d) => d.data.name + " " + Num.addComma(d.data.count) + " " + (parseInt(d.data.count) / sum * 100).toFixed(1) + "%");
+    
+    pieGroup.append("text")
+      .attr("fill", "black")
+      .attr("dy", "5px")
+      .attr("font-size", "12px")
+      .attr("text-anchor", "middle")
+      .text((d) => Num.addComma(sum));
   }
 }
 

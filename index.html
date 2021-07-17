@@ -1,33 +1,35 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>chart-pie demo</title>
 </head>
-<body>
+<body style="text-align:center">
 
 <h1>chart-pie tag demo</h1>
 
-<script type="module" src="./chart-pie.js"></script>
+<h2>data.go.jp グループ別リソース数</h2>
 
-<chart-pie style="height:400px;width:800px;">
+<script type="module" src="./chart-pie.js"></script>
+<chart-pie style="height:400px;width:600px;">
 name,count
-行財政,5944
-企業・家計・経済,5099
-司法・安全・環境,3006
-人口・世帯,2612
-国土・気象,1823
-教育・文化・スポーツ・生活,1720
-農林水産業,1686
-住宅・土地・建設,1096
-社会保障・衛生,1011
-労働・賃金,692
-情報通信・科学技術,687
-運輸・観光,474
-鉱工業,419
-エネルギー・水,408
-その他,396
-国際,291
-商業・サービス業,162
+農林水産業,96777
+行財政,47496
+司法・安全・環境,44875
+企業・家計・経済,28641
+教育・文化・スポーツ・生活,28012
+情報通信・科学技術,20507
+人口・世帯,19872
+住宅・土地・建設,12329
+社会保障・衛生,9975
+労働・賃金,9638
+エネルギー・水,7369
+国土・気象,6442
+国際,5767
+鉱工業,4470
+商業・サービス業,2690
+その他,2138
+運輸・観光,1245
 </chart-pie>
 
+<h2>data.go.jp フォーマット別リソース数</h2>
 <chart-pie src="./data_go_jp_format.csv" style="width:100vw;height:30vh;"></chart-pie>
 
 <a href=https://github.com/code4fukui/chart-pie/>src on GitHub</a>
