@@ -1,0 +1,34 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>chart-pie demo</title>
+</head>
+<body style="text-align:center">
+
+<h1>chart-pie tag demo by script</h1>
+
+<div id=p></div>
+
+<script type="module">
+import { ChartPie } from "./chart-pie.js";
+
+const data = {
+  "A": 30,
+  "B": 20,
+  "C": 70,
+};
+/*
+const data = [
+  { name: "A", count: 30 },
+  { name: "B", count: 20 },
+  { name: "C", count: 70 },
+];
+*/
+
+const chart = new ChartPie(data);
+chart.style.width = "300px";
+chart.style.height = "300px";
+p.appendChild(chart);
+</script>
+
+<a href=https://github.com/code4fukui/chart-pie/>src on GitHub</a>
+</body>
+ </html>

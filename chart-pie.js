@@ -15,13 +15,27 @@ const getCSV = async (comp) => {
 };
 
 class ChartPie extends HTMLElement {
-  constructor() {
+  constructor(data) {
     super();
+    if (data !== undefined) {
+      this.data = data;
+      //this.setAttribute("value", data);
+    }
     this.style.display = this.style.display || "inline-block";
     this.init();
   }
   async init() {
-    this.data = await getCSV(this);
+    if (this.data) {
+      if (typeof this.data == "object") {
+        this.data = Object.keys(this.data).map((key) => {
+          return { name: key, count: this.data[key] };
+        });
+      } else if (Array.isArray(this.data)) {
+        this.data = await getCSV(this);
+      } else {
+        console.log("can't rendering: " + this.data);
+      }
+    }
     window.addEventListener("resize", () => this.draw());
     this.draw();
   }
@@ -35,7 +49,11 @@ class ChartPie extends HTMLElement {
     const width = this.offsetWidth || 400;
     const height = this.offsetHeight || 400;
     const radius = Math.min(width, height) / 2 - 10;
- 
+    
+    if (!dataset) {
+      return;
+    }
+
     svg.attr("width", width).attr("height", height);
     const g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     
