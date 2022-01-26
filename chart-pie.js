@@ -2,38 +2,34 @@ import * as d3 from "https://cdn.skypack.dev/d3@7";
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { Num } from "https://js.sabae.cc/Num.js";
 
-const getCSV = async (comp) => {
-  const fn = comp.getAttribute("src");
-  if (fn) {
-    const data = CSV.toJSON(await CSV.fetch(fn));
-    return data;
-  }
-  const txt = comp.textContent.trim();
-  const data = CSV.toJSON(CSV.decode(txt));
-  comp.textContent = "";
-  return data;
-};
-
 class ChartPie extends HTMLElement {
   constructor(data) {
     super();
     if (data !== undefined) {
+      if (!Array.isArray(data)) {
+        data = Object.keys(data).map(name => {
+          return { name, value: data[name] }
+        });
+      }
       this.data = data;
+      console.log(this.data);
       //this.setAttribute("value", data);
+    } else {
+      const txt = this.textContent.trim();
+      const data = CSV.toJSON(CSV.decode(txt));
+      this.textContent = "";
+      if (data.length > 0) {
+        this.data = data;
+      }
     }
     this.style.display = this.style.display || "inline-block";
     this.init();
   }
   async init() {
-    if (this.data) {
-      if (typeof this.data == "object") {
-        this.data = Object.keys(this.data).map((key) => {
-          return { name: key, count: this.data[key] };
-        });
-      } else if (Array.isArray(this.data)) {
-        this.data = await getCSV(this);
-      } else {
-        console.log("can't rendering: " + this.data);
+    if (!this.data) {
+      const fn = this.getAttribute("src");
+      if (fn) {
+        this.data = CSV.toJSON(await CSV.fetch(fn));
       }
     }
     window.addEventListener("resize", () => this.draw());
@@ -91,7 +87,7 @@ class ChartPie extends HTMLElement {
       .attr("dy", "5px")
       .attr("font-size", "12px")
       .attr("text-anchor", "middle")
-      .text((d) => d.data.name + " " + Num.addComma(d.data.count) + " " + (parseInt(d.data.count) / sum * 100).toFixed(1) + "%");
+      .text((d) => d.data.name + " " + Num.addComma(d.data.count || d.data.value) + " " + (parseInt(d.data.count || d.data.value) / sum * 100).toFixed(1) + "%");
     
     pieGroup.append("text")
       .attr("fill", "black")
